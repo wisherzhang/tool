@@ -1,0 +1,44 @@
+package com.anna.logwriter;
+
+import java.io.File;
+import java.io.IOException;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+
+public class MainActivity extends Activity {
+
+	private LogWriter mLogWriter;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		File logf = new File(Environment.getExternalStorageDirectory()
+        		+ File.separator + "DemoLog.txt");
+        
+        try {
+			mLogWriter = LogWriter.open(logf.getAbsolutePath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.d("---test---", e.getMessage());
+		}
+        
+        log("onCreate()");
+	}
+
+	public void log(String msg) {
+    	Log.d("---test---", msg);
+    	
+    	try {
+			mLogWriter.print(MainActivity.class, msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			Log.d("---test---", e.getMessage());
+		}
+    }
+
+}
